@@ -1,0 +1,120 @@
+openapi: 3.0.0
+info:
+  title: URL Shortener API
+  description: API for creating and retrieving shortened URLs.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  # You can use 'JWT' or 'any' depending on your token type
+security:
+  - BearerAuth: []   
+paths:
+  /api/get_token:
+    get:
+      summary: Retrieve a access token
+      description: Get the access token.
+      tags:
+        - URLs      
+      responses:
+        '200':
+          description: Access token details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: r9jiHj9nVs5ZSOmG
+
+  /api/urls:
+    post:
+      summary: Create a shortened URL
+      description: Submit a long URL to generate a unique shortened URL.
+      tags:
+        - URLs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                long_url:
+                  type: string
+                  example: https://example.com
+              required:
+                - long_url
+      responses:
+        '201':
+          description: Shortened URL created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  short_url:
+                    type: string
+                    example: abc123
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+        '500':
+          description: Internal server error
+
+  /api/urls/{id}:
+    get:
+      summary: Retrieve a long URL
+      description: Get the details of a specific Long URL by its shortened url.
+      tags:
+        - URLs
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique ID or short URL
+          schema:
+            type: string
+            example: qaCB50
+      responses:
+        '200':
+          description: Shortened URL details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 1
+                  long_url:
+                    type: string
+                    example: https://example.com
+                  short_url:
+                    type: string
+                    example: abc123
+        '404':
+          description: Shortened URL not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Short URL not found
+        '500':
+          description: Internal server error
