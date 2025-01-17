@@ -13,10 +13,15 @@ application up and running.
 
 
 API's desciption
+swagger UI url - http://localhost:3000/api-docs/index.html
 1. hit the swagger API get token to get authentication token.
 2. save this token in authorize dialog box which appears on right top corner of the swagger API doc and save.
 3. now hit the second API to create short url with entering the long url in the params and you will get the short url token in the response.
 4. copy the above short url token to get the long url in the response on the third last most API.
+
+test cases 
+1. use bundle exec rspec to run the test cases.
+2. run index.html file to see the test case coverage on your browser.
 
 Please mention this(about git repo)
 -> master is the main branch that contains all the code.
